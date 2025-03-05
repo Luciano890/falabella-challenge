@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Productos Clientes - Ríos del Desierto SAS{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Título de la página -->
+    <h2 class="text-center mb-4">Centro de Productos para los Clientes</h2>
+
+    <!-- Lista de productos -->
+    <div class="card shadow mb-5">
+        <div class="card-header bg-info text-white">
+            <h5 class="card-title mb-0">Lista de Productos</h5>
+        </div>
+        <div class="card-body">
+            {% if clientshoppings %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Cantidad</th>
+                                <th>Fecha</th>
+                                <th>Cliente</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for clientshop in clientshoppings %}
+                                <tr>
+                                    <td>{{ clientshop.name }}</td>
+                                    <td>{{ clientshop.amount }}</td>
+                                    <td>{{ clientshop.date }}</td>
+                                    <td>{{ clientshop.client }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted">No hay productos registrados.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Formulario para crear un nuevo producto -->
+    <div class="card shadow">
+        <div class="card-header bg-success text-white">
+            <h5 class="card-title mb-0">Crear un Nuevo Producto</h5>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="row g-3">
+                    {% for field in form %}
+                        <div class="col-md-6">
+                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                            {% if field.errors %}
+                                <div class="text-danger">
+                                    {{ field.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success">Crear Producto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
